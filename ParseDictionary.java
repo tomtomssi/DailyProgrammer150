@@ -17,29 +17,33 @@ import java.util.Set;
  */
 public class ParseDictionary {
 
-    private String mCharacters;
-    private String mVowels;
-    
-    private String mUniqueVowels;
-    private String mUniqueCharacters;
+    private final String _Characters;
+    private final String _Vowels;
+
+    private final String _UniqueCharacters;
 
     public ParseDictionary(String v, String c) {
-        this.mCharacters = c;
-        this.mVowels = v;
-        
-        this.mUniqueCharacters = getUniqueCharacters(mCharacters);
-        this.mUniqueVowels = getUniqueCharacters(mVowels);
+        this._Characters = c;
+        this._Vowels = v;
+
+        this._UniqueCharacters = getUniqueCharacters(_Characters.concat(_Vowels));
     }
 
     private final String file = "D:\\Programming\\Netbeans\\DailyProgrammer150\\src\\dailyprogrammer150\\enable1.txt";
 
-    public void wordCount() {
+    public void findWords() {
         BufferedReader br = null;
         try {
             String sLine;
+            int count = 0;
             br = new BufferedReader(new FileReader(file));
             while ((sLine = br.readLine()) != null) {
-                System.out.println(sLine);
+                if (!containsCharacters(sLine.toCharArray())) {
+                    ++count;
+                    //Print six items per line
+                    if(count % 6 == 0) System.out.println();
+                    System.out.print(sLine + " ");
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -55,18 +59,29 @@ public class ParseDictionary {
     }
 
     //Generate a list of unique characters from the inputs
-    private String getUniqueCharacters(String word){
+    private String getUniqueCharacters(String word) {
         char[] chars = word.toCharArray();
         Set<Character> charSet = new LinkedHashSet<>();
-        for(char c : chars){
+        for (char c : chars) {
             charSet.add(c);
         }
-        
+
         StringBuilder sb = new StringBuilder();
-        for(Character character : charSet){
+        for (Character character : charSet) {
             sb.append(character);
         }
-        
+
         return sb.toString();
+    }
+
+    //Check if the file item has characters that aren't present in the input
+    private boolean containsCharacters(char[] word) {
+        int index = word.length;
+        for (char c : word) {
+            if (!this._UniqueCharacters.contains(String.valueOf(c))) {
+                return true;
+            }
+        }
+        return false;
     }
 }

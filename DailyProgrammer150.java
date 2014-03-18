@@ -18,6 +18,6 @@ public class DailyProgrammer150 {
         String mCharacters = scanner.nextLine();
         String mVowels = scanner.nextLine();
         ParseDictionary pd = new ParseDictionary(mVowels, mCharacters);
-
+        pd.findWords();
     }
 }
